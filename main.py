@@ -18,6 +18,16 @@ class BinaryNumber:
 ## ensure that x, y are appropriately sized binary vectors for a
 ## divide and conquer approach.
 
+def _quadratic_multiply(x, y):
+  xvec, yvec = pad(x, y)
+  if(xvec.size() <= 1 and yvec.size() <= 1):
+    return xvec*yvec
+  else:
+    x_left, x_right = split_number(xvec)
+    y_left, y_right = split_number(yvec)
+    
+
+  
 def binary2int(binary_vec): 
     if len(binary_vec) == 0:
         return BinaryNumber(0)
@@ -45,10 +55,8 @@ def pad(x,y):
     return x,y
 
 def quadratic_multiply(x, y):
-    ### TODO
-    pass
-    ###
-
+  #converts the result from a binary number to a regular int
+  return _quadratic_multiply(x, y).decimal_val
 
 
 ## Feel free to add your own tests here.
