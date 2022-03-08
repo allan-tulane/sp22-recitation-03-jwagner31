@@ -5,13 +5,13 @@ See recitation-03.pdf for details.
 import time
 
 class BinaryNumber:
-    """ done """
-    def __init__(self, n):
-        self.decimal_val = n               
-        self.binary_vec = list('{0:b}'.format(n)) 
-        
-    def __repr__(self):
-        return('decimal=%d binary=%s' % (self.decimal_val, ''.join(self.binary_vec)))
+  """ done """
+  def __init__(self, n):
+    self.decimal_val = n               
+    self.binary_vec = list('{0:b}'.format(n)) 
+  
+  def __repr__(self):
+    return('decimal=%d binary=%s' % (self.decimal_val, ''.join(self.binary_vec)))
     
 
 ## Implement multiplication functions here. Note that you will have to
@@ -19,14 +19,28 @@ class BinaryNumber:
 ## divide and conquer approach.
 
 def _quadratic_multiply(x, y):
-  xvec, yvec = pad(x, y)
-  if(xvec.size() <= 1 and yvec.size() <= 1):
-    return xvec*yvec
+  xvec, yvec = pad(x.binary_vec, y.binary_vec)
+  if(len(xvec) <= 1 and len(yvec) <= 1):
+    return BinaryNumber(len(xvec)*len(yvec))
   else:
     x_left, x_right = split_number(xvec)
     y_left, y_right = split_number(yvec)
-    
 
+    #left part
+    LP = quadratic_multiply(x_left, y_left)
+    sumLeft = bit_shift(LP, n/2)
+
+    #middle sum
+    MsumL = quadratic_multiply(x_left, y_right)
+    MsumR = quadratic_multiply(x_right, y_left)
+    inside = MsumL + MsumR
+    sumMid = bit_shift(inside, n/2)
+
+    #right sum
+    sumRight = quadratic_multiply(x_right, y_right)
+
+    total = sumLeft + sumMid + sumRight
+    return BinaryNumber(total)
   
 def binary2int(binary_vec): 
     if len(binary_vec) == 0:
