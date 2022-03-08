@@ -20,26 +20,28 @@ class BinaryNumber:
 
 def _quadratic_multiply(x, y):
   xvec, yvec = pad(x.binary_vec, y.binary_vec)
-  if(len(xvec) <= 1 and len(yvec) <= 1):
-    return BinaryNumber(len(xvec)*len(yvec))
+  #if(len(xvec) <= 1 and len(yvec) <= 1):
+  if(x.decimal_val <= 1 and y.decimal_val <= 1):
+    return BinaryNumber(x.decimal_val*y.decimal_val)
   else:
     x_left, x_right = split_number(xvec)
     y_left, y_right = split_number(yvec)
 
+    n = len(xvec)
     #left part
-    LP = quadratic_multiply(x_left, y_left)
-    sumLeft = bit_shift(LP, n/2)
+    LP = _quadratic_multiply(x_left, y_left)
+    sumLeft = bit_shift(LP, n)
 
     #middle sum
-    MsumL = quadratic_multiply(x_left, y_right)
-    MsumR = quadratic_multiply(x_right, y_left)
-    inside = MsumL + MsumR
-    sumMid = bit_shift(inside, n/2)
+    MsumL = _quadratic_multiply(x_left, y_right)
+    MsumR = _quadratic_multiply(x_right, y_left)
+    inside = MsumL.decimal_val + MsumR.decimal_val
+    sumMid = bit_shift(BinaryNumber(inside), n//2)
 
     #right sum
-    sumRight = quadratic_multiply(x_right, y_right)
+    sumRight = _quadratic_multiply(x_right, y_right)
 
-    total = sumLeft + sumMid + sumRight
+    total = sumLeft.decimal_val + sumMid.decimal_val + sumRight.decimal_val
     return BinaryNumber(total)
   
 def binary2int(binary_vec): 
@@ -76,6 +78,12 @@ def quadratic_multiply(x, y):
 ## Feel free to add your own tests here.
 def test_multiply():
     assert quadratic_multiply(BinaryNumber(2), BinaryNumber(2)) == 2*2
+    assert quadratic_multiply(BinaryNumber(4), BinaryNumber(5)) == 4*5
+    assert quadratic_multiply(BinaryNumber(10), BinaryNumber(5)) == 10*5
+    assert quadratic_multiply(BinaryNumber(100), BinaryNumber(2)) == 100*2
+    assert quadratic_multiply(BinaryNumber(0), BinaryNumber(1000)) == 0*1000
+
+
     
     
 def time_multiply(x, y, f):
